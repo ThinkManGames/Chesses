@@ -150,6 +150,8 @@
     <Compile Include="Assets\Scripts\Capture Scripts\DandDCapture.cs" />
     <Compile Include="Assets\Scripts\Board Scripts\QueenBoard.cs" />
     <Compile Include="Assets\Scripts\PreGame Scripts\Pregame.cs" />
+    <Compile Include="Assets\Scripts\Capture Scripts\WorldWarCapture.cs" />
+    <Compile Include="Assets\Scripts\Board Scripts\WorldWarBoard.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
