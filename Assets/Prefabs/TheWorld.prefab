@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &141436997731654261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 141436997731654263}
+  - component: {fileID: 141436997731654262}
+  m_Layer: 0
+  m_Name: TheWorld
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &141436997731654263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141436997731654261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &141436997731654262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141436997731654261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60aca96cbf60edb499e1e279025b419b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnNumber: 1
+  turn: 87
+  boardSide: 87
+  wPawn: {fileID: 8689016739840086715, guid: 8667d96540407be4f861331de4f0045d, type: 3}
+  wRook: {fileID: 1844629198877336311, guid: 69b2d1ac6d1295040be09bde4b4f6a25, type: 3}
+  wKnight: {fileID: 3253058589306594300, guid: d801e519d3e44bd4493e04b4654807a9, type: 3}
+  wBishop: {fileID: 8098211077951772229, guid: be152a730a2c0fd4d86a649438398242, type: 3}
+  wQueen: {fileID: 8230160477397238952, guid: 7554ac1d21730ca439ee8d3673780457, type: 3}
+  wKing: {fileID: 5293397757521309382, guid: 435ff161dbdafba46bd3df656e116071, type: 3}
+  bPawn: {fileID: 6124614288560791217, guid: 3278eebf996442242a514efe9b0f799f, type: 3}
+  bRook: {fileID: 5249446951987138143, guid: 058e581fcb2c8ca40900e84ac5785871, type: 3}
+  bKnight: {fileID: 9054683873071595191, guid: ffe99d91921052d4cac4e545db30d1e8, type: 3}
+  bBishop: {fileID: 5153265583542652231, guid: c744674cbb14dd249836f66efb876f24, type: 3}
+  bQueen: {fileID: 6570817404225712322, guid: 058c59e8eae7b1848ad6c99350c5435d, type: 3}
+  bKing: {fileID: 143697471575420597, guid: 75725fae322fcb24b9a6ae351465b5a1, type: 3}
+  boardLoader: {fileID: 5484965773316746787, guid: 28bc2b70af9050b45ab30c26fd5b83ed, type: 3}
+  capture: {fileID: 8555586211066477028, guid: 78891b62981b2944f98ca48b778e69a0, type: 3}
+  win: {fileID: 2452051938016113198, guid: 8cf08abffe6fd1e4d9fb202ecb255304, type: 3}
+  pregame: {fileID: 5719694687810532129, guid: 673abb0a638e6cd4cbce2c514f781d1b, type: 3}
+  moves: {fileID: 1952558142980154956, guid: 72b3f6df57853b04cbbb18cefa8b6d69, type: 3}
+  dontRotate: 0
+  maxTime: 0.2
