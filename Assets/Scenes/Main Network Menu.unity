@@ -3564,6 +3564,7 @@ MonoBehaviour:
   myPregame: {fileID: 5719694687810532129, guid: 673abb0a638e6cd4cbce2c514f781d1b, type: 3}
   useAI: 0
   gamemode: 
+  isSinglePlayer: 0
 --- !u!4 &221852206
 Transform:
   m_ObjectHideFlags: 0
@@ -6915,9 +6916,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 417395535}
-        m_TargetAssemblyTypeName: QuitBehavior, Assembly-CSharp
-        m_MethodName: startQuit
+      - m_Target: {fileID: 221852205}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: loadTitleScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23921,9 +23922,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1407605946}
-        m_TargetAssemblyTypeName: QuitBehavior, Assembly-CSharp
-        m_MethodName: startQuit
+      - m_Target: {fileID: 221852205}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: loadTitleScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34055,7 +34056,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1951404044
 RectTransform:
   m_ObjectHideFlags: 0

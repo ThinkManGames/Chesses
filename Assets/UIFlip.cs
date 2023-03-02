@@ -18,7 +18,10 @@ public class UIFlip : MonoBehaviour
         world = FindObjectOfType<TheWorld>();
         topPos = bPanel.transform.position;
         bottomPos = wPanel.transform.position;
-        myColor = FindObjectOfType<NetworkManager>().myColor[0];
+        if(FindObjectOfType<NetworkManager>() != null)
+        {
+            myColor = FindObjectOfType<NetworkManager>().myColor[0];
+        }
     }
 
     // Update is called once per frame
@@ -26,6 +29,10 @@ public class UIFlip : MonoBehaviour
     {
         if (!world.useAI)
         {
+            if(world.isSinglePlayer)
+            {
+                myColor = world.boardSide;
+            }
             if (myColor == 'W')
             {
                 wPanel.transform.position = bottomPos;

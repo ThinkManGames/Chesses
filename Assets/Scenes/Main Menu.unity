@@ -7673,7 +7673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &763664831
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8098,6 +8098,8 @@ MonoBehaviour:
   myWin: {fileID: 2452051938016113198, guid: 8cf08abffe6fd1e4d9fb202ecb255304, type: 3}
   myPregame: {fileID: 5719694687810532129, guid: 673abb0a638e6cd4cbce2c514f781d1b, type: 3}
   useAI: 0
+  gamemode: 
+  isSinglePlayer: 1
 --- !u!4 &816808894
 Transform:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -63,20 +64,27 @@ public class TheWorld : MonoBehaviour
     public int wLastTurn = 5;
     public int bLastTurn = 6;
 
+    public bool isSinglePlayer = true;
+
     private NetworkManager netManager;
 
+    private int AITime = 0;
 
     // Start is called before the first frame update
     private void Start()
     {
+        SceneLoader theLoader = FindObjectOfType<SceneLoader>();
+        this.isSinglePlayer = theLoader.isSinglePlayer;
         ai = FindObjectOfType<SimpleAI>();
-        netManager = FindObjectOfType<NetworkManager>();
-        netManager.theWorld = this;
-        Debug.Log(netManager.myColor[0]);
+        if (!isSinglePlayer)
+        {
+            netManager = FindObjectOfType<NetworkManager>();
+            netManager.theWorld = this;
+            Debug.Log(netManager.myColor[0]);
+        }
         boardSide = 'W';
         turnNumber = 1;
         turn = 'W';
-        SceneLoader theLoader = FindObjectOfType<SceneLoader>();
         boardLoader = theLoader.myBoard;
         capture = theLoader.myCapture;
         win = theLoader.myWin;
@@ -108,13 +116,16 @@ public class TheWorld : MonoBehaviour
         moves.bcr = true;
         moves.wcl = true;
         moves.wcr = true;
-        if(netManager.myColor[0] == 'W')
+        if (!isSinglePlayer)
         {
-            Debug.Log("I am the captain now");
-            netManager.SendBoard(board);
+            if (netManager.myColor[0] == 'W')
+            {
+                Debug.Log("I am the captain now");
+                netManager.SendBoard(board);
+            }
+            GameObject.Find("WhitePlayerName").GetComponent<Text>().text = netManager.whitePlayerName;
+            GameObject.Find("BlackPlayerName").GetComponent<Text>().text = netManager.blackPlayerName;
         }
-        GameObject.Find("WhitePlayerName").GetComponent<Text>().text = netManager.whitePlayerName;
-        GameObject.Find("BlackPlayerName").GetComponent<Text>().text = netManager.blackPlayerName;
         pregame.loadPregame();
     }
     private void Update()
@@ -129,45 +140,13 @@ public class TheWorld : MonoBehaviour
                 runBoardFlip();
             }
         }
-    }
-
-    public void runBoardFlip()
-    {
-        if (win.isGameOver(turn, board))
+        if(useAI && AITime > 0)
         {
-            if (turn == 'B')
+            if(AITime < 5)
             {
-                GameObject.Find("Win Text").GetComponent<Text>().text = "White Wins!";
-                GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
-                netManager.GameOver("white");
-                Time.timeScale = 0;
-            } else if (turn == 'W')
-            {
-                GameObject.Find("Win Text").GetComponent<Text>().text = "Black Wins!";
-                GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
-                netManager.GameOver("black");
-                Time.timeScale = 0;
+                AITime++;
+                return;
             }
-        }
-        else if (win.isDraw(turn, board))
-        {
-            if (turn == 'B')
-            {
-                GameObject.Find("Win Text").GetComponent<Text>().text = "Draw!";
-                GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
-                netManager.GameOver("draw");
-                Time.timeScale = 0;
-            }
-            else if (turn == 'W')
-            {
-                GameObject.Find("Win Text").GetComponent<Text>().text = "Draw!";
-                GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
-                netManager.GameOver("draw");
-                Time.timeScale = 0;
-            }
-        }
-        else if (useAI && turn == 'B')
-        {
             if (rotatingBoard)
             {
                 boardSide = boardSide == 'B' ? 'W' : 'B';
@@ -179,7 +158,7 @@ public class TheWorld : MonoBehaviour
             {
                 for (int j = 0; j < tCol; j++)
                 {
-                    if(board[i,j][0] == 'W')
+                    if (board[i, j][0] == 'W')
                     {
                         count++;
                     }
@@ -205,10 +184,91 @@ public class TheWorld : MonoBehaviour
             selectSpot(GameObject.Find(spotName).GetComponent<SpotBehavior>());
             spotName = char.ConvertFromUtf32(AIMove[3] + 65) + " (" + (AIMove[2] + 1).ToString() + ")";
             selectSpot(GameObject.Find(spotName).GetComponent<SpotBehavior>());
+            AITime = 0;
+        }
+    }
+
+    public async void runBoardFlip()
+    {
+        if (win.isGameOver(turn, board))
+        {
+            if (turn == 'B')
+            {
+                GameObject.Find("Win Text").GetComponent<Text>().text = "White Wins!";
+                GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
+                if (!isSinglePlayer)
+                {
+                    netManager.GameOver("white");
+                }
+                Time.timeScale = 0;
+            } else if (turn == 'W')
+            {
+                GameObject.Find("Win Text").GetComponent<Text>().text = "Black Wins!";
+                GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
+                if (!isSinglePlayer)
+                {
+                    netManager.GameOver("black");
+                }
+                Time.timeScale = 0;
+            }
+        }
+        else if (win.isDraw(turn, board))
+        {
+            GameObject.Find("Win Text").GetComponent<Text>().text = "Draw!";
+            GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
+            if (!isSinglePlayer)
+            {
+                netManager.GameOver("draw");
+            }
+            Time.timeScale = 0;
+        }
+        else if (useAI && turn == 'B')
+        {
+            AITime = 1;
+            //if (rotatingBoard)
+            //{
+            //    boardSide = boardSide == 'B' ? 'W' : 'B';
+            //}
+            //int tRow = board.GetLength(0);
+            //int tCol = board.Length / board.GetLength(0);
+            //int count = 0;
+            //for (int i = 0; i < tRow; i++)
+            //{
+            //    for (int j = 0; j < tCol; j++)
+            //    {
+            //        if(board[i,j][0] == 'W')
+            //        {
+            //            count++;
+            //        }
+            //    }
+            //}
+            //int[] AIMove = null;
+            //if (count < 6)
+            //{
+            //    AIMove = ai.getBestMove(board, 'B', 5);
+            //}
+            //else
+            //{
+            //    AIMove = ai.getBestMove(board, 'B', 4);
+            //}
+            ////SpotBehavior endSpot = null;
+            ////int[] AIMove = new int[4];
+            ////do
+            ////{
+            ////    AIMove = ai.getBestMove(board, 'B', 0);
+            ////    endSpot = GameObject.Find(char.ConvertFromUtf32(AIMove[3] + 65) + " (" + (AIMove[2] + 1).ToString() + ")").GetComponent<SpotBehavior>();
+            ////} while (!win.isGoodMove('B', capture.movementCheck(endSpot, board, AIMove[0], AIMove[1])));
+            //string spotName = char.ConvertFromUtf32(AIMove[1] + 65) + " (" + (AIMove[0] + 1).ToString() + ")";
+            //selectSpot(GameObject.Find(spotName).GetComponent<SpotBehavior>());
+            //spotName = char.ConvertFromUtf32(AIMove[3] + 65) + " (" + (AIMove[2] + 1).ToString() + ")";
+            //selectSpot(GameObject.Find(spotName).GetComponent<SpotBehavior>());
         }
         else if (rotatingBoard)
         {
-            netManager.MyTurnOver();
+            if (!isSinglePlayer)
+            {
+                netManager.MyTurnOver();
+            }
             boardSide = boardSide == 'B' ? 'W' : 'B';
         }
 
@@ -300,9 +360,12 @@ public class TheWorld : MonoBehaviour
             {
                 return;
             }
-            if (boardSide != netManager.myColor[0])
+            if (!isSinglePlayer)
             {
-                return;
+                if (boardSide != netManager.myColor[0])
+                {
+                    return;
+                }
             }
             if (possibleSpots[spot.row, spot.col] == 1)
             {
@@ -318,10 +381,16 @@ public class TheWorld : MonoBehaviour
                     selectedRow = -1;
                     possibleSpots = new int[nRow, nCol];
                     turnNumber++;
-                    netManager.SendBoard(board);
-                    netManager.UpdateOpponentsSquares(showOldMove, showDanger);
+                    if (!isSinglePlayer)
+                    {
+                        netManager.SendBoard(board);
+                        netManager.UpdateOpponentsSquares(showOldMove, showDanger);
+                    }
                     moves.castleCheck(board);
-                    netManager.SendLostPieces();
+                    if (!isSinglePlayer)
+                    {
+                        netManager.SendLostPieces();
+                    }
                     if (capture.changeTurn()) // if the color turn has changed
                     {
                         if (turnNumber == 2)
@@ -374,7 +443,10 @@ public class TheWorld : MonoBehaviour
                             {
                                 GameObject.Find("Win Text").GetComponent<Text>().text = "Draw!";
                                 GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
-                                netManager.GameOver("draw");
+                                if (!isSinglePlayer)
+                                {
+                                    netManager.GameOver("draw");
+                                }
                                 Time.timeScale = 0;
                             }
                         }
@@ -416,7 +488,10 @@ public class TheWorld : MonoBehaviour
                             {
                                 GameObject.Find("Win Text").GetComponent<Text>().text = "Draw!";
                                 GameObject.Find("WinPopup").GetComponent<Canvas>().enabled = true;
-                                netManager.GameOver("draw");
+                                if (!isSinglePlayer)
+                                {
+                                    netManager.GameOver("draw");
+                                }
                                 Time.timeScale = 0;
                             }
                         }
@@ -502,8 +577,11 @@ public class TheWorld : MonoBehaviour
     public void MyTurn()
     {
         turnNumber++;
-        turn = netManager.myColor[0];
-        boardSide = netManager.myColor[0];
+        if (!isSinglePlayer)
+        {
+            turn = netManager.myColor[0];
+            boardSide = netManager.myColor[0];
+        }
     }
 
     public void StopMyGame(string condition)

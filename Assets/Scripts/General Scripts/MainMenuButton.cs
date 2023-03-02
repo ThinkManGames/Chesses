@@ -6,9 +6,15 @@ public class MainMenuButton : MonoBehaviour
 {
     public void buttonClicked()
     {
-        FindObjectOfType<NetworkManager>().ReturnToMenu();
-        //SceneLoader loader = FindObjectOfType<SceneLoader>();
-        //Time.timeScale = 1;
-        //loader.loadMainMenu();
+        if (FindObjectOfType<NetworkManager>() != null)
+        {
+            FindObjectOfType<NetworkManager>().ReturnToMenu();
+        }
+        else
+        {
+            SceneLoader loader = FindObjectOfType<SceneLoader>();
+            Time.timeScale = 1;
+            loader.loadTitleScreen();
+        }
     }
 }

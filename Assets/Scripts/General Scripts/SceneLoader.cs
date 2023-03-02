@@ -17,6 +17,8 @@ public class SceneLoader : MonoBehaviour
 
     public string gamemode = "";
 
+    [SerializeField] public bool isSinglePlayer;
+
     public void setBoard(Board _boardToSet) { myBoard = _boardToSet; }
     public void setMoves(Moves _movesToSet) { myMoves = _movesToSet; }
     public void setCapture(Capture _captureToSet) { myCapture = _captureToSet; }
@@ -26,6 +28,11 @@ public class SceneLoader : MonoBehaviour
     public void loadScene(string scene)
     {
         SceneManager.LoadScene(scene);
+    }
+
+    public void SetSinglePlayer(bool isSinglePlayer)
+    {
+        this.isSinglePlayer = isSinglePlayer;
     }
 
     public void loadPreloadedScene()
@@ -38,6 +45,7 @@ public class SceneLoader : MonoBehaviour
         gamemode = GameObject.Find("GameSelectionPanelTitle").GetComponent<Text>().text;
         FindObjectOfType<NetworkManager>().HostChoseMode(gamemode);
     }
+
     public void setPreload(string toLoad)
     {
         sceneToLoad = toLoad;
@@ -48,6 +56,16 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("Main Network Menu");
         //FindObjectOfType<NetworkManager>().nameText.text = keepMyName;
         //FindObjectOfType<NetworkManager>().ConnectToGame();
+        Destroy(gameObject);
+    }
+
+    public void loadTitleScreen()
+    {
+        if(FindObjectOfType<NetworkManager>() != null)
+        {
+            Destroy(FindObjectOfType<NetworkManager>().gameObject);
+        }
+        SceneManager.LoadScene("Title Screen");
         Destroy(gameObject);
     }
 }
