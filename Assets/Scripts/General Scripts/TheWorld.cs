@@ -384,7 +384,10 @@ public class TheWorld : MonoBehaviour
                     if (!isSinglePlayer)
                     {
                         netManager.SendBoard(board);
-                        netManager.UpdateOpponentsSquares(showOldMove, showDanger);
+                        if(spot != null)
+                        {
+                            netManager.UpdateOpponentsSquares(showOldMove, showDanger);
+                        }
                     }
                     moves.castleCheck(board);
                     if (!isSinglePlayer)

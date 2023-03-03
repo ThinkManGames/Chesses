@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/World War Chess.unity
     guid: 8e3783ef5bd677140b55d39f7438c216
+  - enabled: 1
+    path: Assets/Scenes/Speedrun Chess.unity
+    guid: 00e23f67dde8acd4c8a4b38f9d0e2564
   m_configObjects: {}

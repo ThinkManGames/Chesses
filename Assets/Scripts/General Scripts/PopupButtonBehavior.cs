@@ -73,7 +73,7 @@ public class PopupButtonBehavior : MonoBehaviour
                 case 'B':
                     currPiece = Instantiate(world.wBishop, Vector3.zero, Quaternion.identity);
                     break;
-                case 'K':
+                case 'N':
                     currPiece = Instantiate(world.wKnight, Vector3.zero, Quaternion.identity);
                     break;
                 case 'Q':
