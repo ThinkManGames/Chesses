@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Speedrun Chess.unity
     guid: 00e23f67dde8acd4c8a4b38f9d0e2564
+  - enabled: 1
+    path: Assets/Scenes/Dodgeball Chess.unity
+    guid: 3dcd6baa291c76946ad687409f12328b
   m_configObjects: {}

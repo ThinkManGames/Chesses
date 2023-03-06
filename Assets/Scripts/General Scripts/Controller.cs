@@ -8,6 +8,7 @@ public class Controller : MonoBehaviour
     public TheWorld theWorld = null;
 
     public LayerMask spotMask;
+    public LayerMask lostPieceMask;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,10 @@ public class Controller : MonoBehaviour
             if (Physics2D.Raycast(mousePos2D,Vector2.zero,1000,spotMask))
             {
                 theWorld.selectSpot(Physics2D.Raycast(mousePos2D, Vector2.zero, 1000, spotMask).collider.gameObject.GetComponent<SpotBehavior>());
+            }
+            else if (Physics2D.Raycast(mousePos2D, Vector2.zero, 1000, lostPieceMask))
+            {
+                (Physics2D.Raycast(mousePos2D, Vector2.zero, 1000, lostPieceMask).collider.gameObject.GetComponent<LostPieceBehavior>()).Clicked();
             }
         }
     }
