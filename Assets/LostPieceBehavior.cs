@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LostPieceBehavior : MonoBehaviour
 {
@@ -11,29 +12,29 @@ public class LostPieceBehavior : MonoBehaviour
         DodgeballCapture capture = (DodgeballCapture)FindObjectOfType<TheWorld>().capture;
         if(capture.placingGuy)
         {
-            string worseThanMe = "KQRBNP";
-            switch(me)
+            string worseThanJustTaken = "KQRBNP";
+            switch(capture.guyTaken)
             {
                 case 'K':
                     break;
                 case 'Q':
-                    worseThanMe = worseThanMe.Substring(1);
+                    worseThanJustTaken = worseThanJustTaken.Substring(1);
                     break;
                 case 'R':
-                    worseThanMe = worseThanMe.Substring(2);
+                    worseThanJustTaken = worseThanJustTaken.Substring(2);
                     break;
                 case 'B':
                 case 'N':
-                    worseThanMe = worseThanMe.Substring(3);
+                    worseThanJustTaken = worseThanJustTaken.Substring(3);
                     break;
                 case 'P':
-                    worseThanMe = worseThanMe.Substring(5);
+                    worseThanJustTaken = worseThanJustTaken.Substring(5);
                     break;
             }
             // if the piece we just took is worse than or equal to the one the player selected to place back on the board, let it happen
-            if(worseThanMe.Contains(capture.guyTaken.ToString()))
+            if (worseThanJustTaken.Contains(me.ToString()))
             {
-                gameObject.GetComponent<SpriteRenderer>().color = green;
+                gameObject.GetComponent<Image>().color = green;
                 capture.selectGuy(me);
             }
         }

@@ -8,12 +8,46 @@ public class DodgeballCapture : Capture
 {
     public bool placingGuy = false;
     public char guyToPlace = ' ';
-    private bool guySelected = false;
+    public bool guySelected = false;
     public char guyTaken = ' ';
 
     private Dictionary<string, int> countOfPieces = new Dictionary<string, int>();
     private bool doneCountingPieces = false;
 
+    private void Awake()
+    {
+        placingGuy = false;
+        guyToPlace = ' ';
+        guySelected = false;
+        guyTaken = ' ';
+        doneCountingPieces = false;
+        countOfPieces = new Dictionary<string, int>();
+    }
+    private void Start()
+    {
+        placingGuy = false;
+        guyToPlace = ' ';
+        guySelected = false;
+        guyTaken = ' ';
+        doneCountingPieces = false;
+        countOfPieces = new Dictionary<string, int>();
+    }
+
+    private bool makeYourStuffNull = true;
+
+    private void Update()
+    {
+        if(makeYourStuffNull == true)
+        {
+            placingGuy = false;
+            guyToPlace = ' ';
+            guySelected = false;
+            guyTaken = ' ';
+            doneCountingPieces = false;
+            countOfPieces = new Dictionary<string, int>();
+            makeYourStuffNull = false;
+        }
+    }
     public override string[,] movementCheck(SpotBehavior spot, string[,] board, int selectedRow, int selectedCol)
     {
         int tRow = board.GetLength(0);
@@ -45,9 +79,10 @@ public class DodgeballCapture : Capture
         {
             if (guyToPlace != ' ')
             {
-                board[selectedRow, selectedCol] = world.turn.ToString() + guyToPlace.ToString() + (countOfPieces[world.turn.ToString() + guyToPlace.ToString()] + 1).ToString();
-                return temp;
+                Debug.Log(world.turn.ToString() + guyToPlace.ToString() + (countOfPieces[world.turn.ToString() + guyToPlace.ToString()] + 1).ToString());
+                board[spot.row, spot.col] = world.turn.ToString() + guyToPlace.ToString() + (countOfPieces[world.turn.ToString() + guyToPlace.ToString()] + 1).ToString();
             }
+            return temp;
         }
         temp[spot.row, spot.col] = temp[selectedRow, selectedCol];
         temp[selectedRow, selectedCol] = "E";
@@ -65,14 +100,16 @@ public class DodgeballCapture : Capture
         int rowCount = world.board.GetLength(0);
         int colCount = world.board.Length / world.board.GetLength(0);
         world.possibleSpots = new int[rowCount, colCount];
+        Debug.Log(rowCount + " " + colCount);
         if (world.turn == 'W')
         {
-            for(int tRow = 0; tRow < rowCount; tRow++)
+            for(int tRow = 0; tRow < 2; tRow++)
             {
-                for (int tCol = 0; tCol < colCount; tCol++)
+                for (int tCol = 1; tCol < colCount; tCol++)
                 {
                     if (world.board[tRow, tCol] == "E")
                     {
+                        Debug.Log("found an empty space at: " + tRow + " " + tCol);
                         world.possibleSpots[tRow,tCol] = 1;
                     }
                 }
@@ -82,7 +119,7 @@ public class DodgeballCapture : Capture
         {
             for (int tRow = rowCount-2; tRow < rowCount; tRow++)
             {
-                for (int tCol = 0; tCol < colCount; tCol++)
+                for (int tCol = 1; tCol < colCount; tCol++)
                 {
                     if (world.board[tRow, tCol] == "E")
                     {
@@ -94,7 +131,7 @@ public class DodgeballCapture : Capture
 
     }
 
-    public virtual void movementLock(SpotBehavior spot, ref string[,] board, int selectedRow, int selectedCol)
+    public override void movementLock(SpotBehavior spot, ref string[,] board, int selectedRow, int selectedCol)
     {
         if(placingGuy)
         {
@@ -106,9 +143,11 @@ public class DodgeballCapture : Capture
                 string spotName = char.ConvertFromUtf32(selectedCol + 65) + " (" + (selectedRow + 1).ToString() + ")";
                 Vector3 newPiecePosition = GameObject.Find(spotName).transform.position;
                 GameObject currPiece = null;
+                DodgeballLostPieceAdder wAdder = GameObject.Find("DeadWhite").GetComponent<DodgeballLostPieceAdder>();
+                DodgeballLostPieceAdder bAdder = GameObject.Find("DeadBlack").GetComponent<DodgeballLostPieceAdder>();
                 if (board[selectedRow, selectedCol][0] == 'W')
                 {
-                    ((DodgeballLostPieceAdder)wAdder).gotAPiece(guyToPlace);
+                    (wAdder).gotAPiece(guyToPlace);
                     switch (board[selectedRow, selectedCol][1])
                     {
                         case 'R':
@@ -137,7 +176,7 @@ public class DodgeballCapture : Capture
                 }
                 else if (board[selectedRow, selectedCol][0] == 'B')
                 {
-                    ((DodgeballLostPieceAdder)bAdder).gotAPiece(guyToPlace);
+                    (bAdder).gotAPiece(guyToPlace);
                     switch (board[selectedRow, selectedCol][1])
                     {
                         case 'R':
@@ -163,13 +202,13 @@ public class DodgeballCapture : Capture
                     currPiece.transform.position = newPiecePosition;
                     currPiece.GetComponent<SpriteRenderer>().sortingLayerName = "PieceMask";
                     currPiece.name = board[selectedRow, selectedCol];
-                    switchColor = true;
-                    switchBoard = true;
-                    guySelected = false;
-                    placingGuy = false;
-                    guyToPlace = ' ';
-                    return;
                 }
+                switchColor = true;
+                switchBoard = true;
+                guySelected = false;
+                placingGuy = false;
+                guyToPlace = ' ';
+                return;
             }
         }
         if(board[selectedRow, selectedCol][1] == 'K' && Mathf.Abs(spot.col - selectedCol) >= 2) // we are castling
@@ -209,11 +248,42 @@ public class DodgeballCapture : Capture
             DodgeballLostPieceAdder wAdder = GameObject.Find("DeadWhite").GetComponent<DodgeballLostPieceAdder>();
             DodgeballLostPieceAdder bAdder = GameObject.Find("DeadBlack").GetComponent<DodgeballLostPieceAdder>();
             Debug.Log(selectedRow.ToString() + " " + selectedCol.ToString() + " " + board[selectedRow, selectedCol] + " " + wAdder.GetAllLostPieces() + " " + bAdder.GetAllLostPieces());
-            if ((board[selectedRow, selectedCol][0] == 'W' && wAdder.GetAllLostPieces() != "") || (board[selectedRow, selectedCol][0] == 'B' && bAdder.GetAllLostPieces() != ""))
+
+            // look through the list of my lost pieces and see if I have a piece that is worse than or equal to the one I just took. If so, allow me to put it on the board.
+            string lostGuys = board[selectedRow, selectedCol][0] == 'W' ? wAdder.GetAllLostPieces() : bAdder.GetAllLostPieces();
+            string worseThanJustTaken = "KQRBNP";
+            int indexInWorseThanJustTaken = worseThanJustTaken.IndexOf(board[spot.row, spot.col][1]);
+            if(worseThanJustTaken[indexInWorseThanJustTaken] == 'N')
             {
-                guyTaken = board[spot.row, spot.col][1];
-                placingGuy = true;
+                // if we just took a knight, let us bring back bishops as well
+                indexInWorseThanJustTaken--;
             }
+            for(int i = indexInWorseThanJustTaken; i < worseThanJustTaken.Length; i++)
+            {
+                if(lostGuys.Contains(worseThanJustTaken[i].ToString()))
+                {
+                    int rowCount = world.board.GetLength(0);
+                    int colCount = world.board.Length / world.board.GetLength(0);
+                    for (int row = (board[selectedRow, selectedCol][0] == 'W' ? 0 : rowCount - 2); row < (board[selectedRow, selectedCol][0] == 'W' ? 2 : rowCount); row++)
+                    {
+                        for(int col = 0; col < colCount; col++)
+                        {
+                            if(board[row,col] == "E")
+                            {
+                                guyTaken = board[spot.row, spot.col][1];
+                                placingGuy = true;
+                                break;
+                            }
+                        }
+                        if(placingGuy == true)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            
+
             if (board[spot.row, spot.col][0] == 'W')
             {
                 wAdder.lostAPiece(board[spot.row, spot.col][1]);
@@ -260,30 +330,4 @@ public class DodgeballCapture : Capture
             switchBoard = true;
         }
     }
-
-    public virtual bool changeTurn()
-    {
-        if(switchColor)
-        {
-            switchColor = false;
-            return true;
-        }
-        return false;
-    }
-
-    public virtual bool changeBoard()
-    {
-        if (switchBoard)
-        {
-            switchBoard = false;
-            return true;
-        }
-        return false;
-    }
-
-    //public virtual void SelectedPiece()
-    //{
-    //    switchColor = true;
-    //    switchBoard = true;
-    //}
 }

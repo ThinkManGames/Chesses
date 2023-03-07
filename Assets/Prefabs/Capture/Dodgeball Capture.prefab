@@ -47,5 +47,6 @@ MonoBehaviour:
   wAdder: {fileID: 0}
   bAdder: {fileID: 0}
   placingGuy: 0
-  guyToPlace: 32
-  guyTaken: 32
+  guyToPlace: 80
+  guySelected: 0
+  guyTaken: 66

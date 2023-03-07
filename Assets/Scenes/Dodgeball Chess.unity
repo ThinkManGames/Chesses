@@ -10774,7 +10774,7 @@ MonoBehaviour:
   bQueen: {fileID: 6570817404225712322, guid: 058c59e8eae7b1848ad6c99350c5435d, type: 3}
   bKing: {fileID: 143697471575420597, guid: 75725fae322fcb24b9a6ae351465b5a1, type: 3}
   boardLoader: {fileID: 5484965773316746787, guid: 28bc2b70af9050b45ab30c26fd5b83ed, type: 3}
-  capture: {fileID: 8555586211066477028, guid: 78891b62981b2944f98ca48b778e69a0, type: 3}
+  capture: {fileID: 8217910558458714158, guid: c3ba3a1599de8bb49bad652280b19bd6, type: 3}
   ai: {fileID: 0}
   win: {fileID: 2452051938016113198, guid: 8cf08abffe6fd1e4d9fb202ecb255304, type: 3}
   pregame: {fileID: 5719694687810532129, guid: 673abb0a638e6cd4cbce2c514f781d1b, type: 3}

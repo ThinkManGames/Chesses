@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DodgeballLostPieceAdder : LostPieceAdder
 {
@@ -29,7 +30,7 @@ public class DodgeballLostPieceAdder : LostPieceAdder
             {
                 GameObject k = Instantiate(King,gameObject.transform);
                 k.AddComponent<LostPieceBehavior>();
-                k.AddComponent<BoxCollider2D>();
+                k.AddComponent<BoxCollider2D>().size = new Vector2(50,50);
                 k.GetComponent<LostPieceBehavior>().me = 'K';
                 k.layer = 12; // lostPieceMask Layer
                 lostPieces.Add(k);
@@ -93,7 +94,7 @@ public class DodgeballLostPieceAdder : LostPieceAdder
             {
                 GameObject k = Instantiate(Bishop, gameObject.transform);
                 k.AddComponent<LostPieceBehavior>();
-                k.AddComponent<BoxCollider2D>();
+                k.AddComponent<Button>().onClick.AddListener(delegate { k.GetComponent<LostPieceBehavior>().Clicked(); });
                 k.GetComponent<LostPieceBehavior>().me = 'B';
                 k.layer = 12; // lostPieceMask Layer
                 lostPieces.Add(k);
@@ -109,7 +110,7 @@ public class DodgeballLostPieceAdder : LostPieceAdder
             {
                 GameObject k = Instantiate(Pawn, gameObject.transform);
                 k.AddComponent<LostPieceBehavior>();
-                k.AddComponent<BoxCollider2D>();
+                k.AddComponent<Button>().onClick.AddListener(delegate { k.GetComponent<LostPieceBehavior>().Clicked(); });
                 k.GetComponent<LostPieceBehavior>().me = 'P';
                 k.layer = 12; // lostPieceMask Layer
                 lostPieces.Add(k);
