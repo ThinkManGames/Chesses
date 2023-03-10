@@ -8,11 +8,11 @@ public class SceneLoader : MonoBehaviour
 {
     public string sceneToLoad = "Normal Chess";
 
-    public Board myBoard = null;
-    public Moves myMoves = null;
-    public Capture myCapture = null;
-    public Win myWin = null;
-    public Pregame myPregame = null;
+    public Board myBoard = new Board();
+    public Moves myMoves = new Moves();
+    public Capture myCapture = new Capture();
+    public Win myWin = new Win();
+    public Pregame myPregame = new Pregame();
     public bool useAI = false;
 
     public string gamemode = "";
